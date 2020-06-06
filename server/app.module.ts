@@ -11,7 +11,10 @@ import { TareaModule } from './src/tarea/tarea.module';
       bundle: require('../server/main'),
       liveReload: true,
     }),
-    MongooseModule.forRoot('mongodb://localhost/tareas'),
+    MongooseModule.forRoot('mongodb://localhost/tareas-database', {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }),
     TareaModule,
   ],
   controllers: [],

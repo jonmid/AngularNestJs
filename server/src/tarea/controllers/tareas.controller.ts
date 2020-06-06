@@ -1,24 +1,41 @@
-import { Controller, Get, Post, Put, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  Param,
+} from '@nestjs/common';
+import { CreateTareaDto } from '../dto/create-tarea.dto';
+import { Tarea } from '../interfaces/tarea.interface';
+import { TareaService } from '../services/tarea/tarea.service';
 
 @Controller('tareas')
 export class TareasController {
+  constructor(private todosSvc: TareaService) {}
+
   // http://localhost:4200/api/tareas
   @Get()
-  all(): string {
-    return 'All TAREAS';
+  async all(): Promise<Tarea[]> {
+    return this.todosSvc.all();
   }
+
   @Post()
-  add(): string {
-    return 'ADD TAREAS';
+  async add(@Body() todo: CreateTareaDto): Promise<Tarea> {
+    return this.todosSvc.add(todo);
   }
 
-  @Put()
-  update(): string {
-    return 'UPDATE TAREAS';
+  @Put(':id')
+  async update(
+    @Param('id') id: string,
+    @Body() todo: CreateTareaDto
+  ): Promise<Tarea> {
+    return this.todosSvc.update(id, todo);
   }
 
-  @Delete()
-  delete(): string {
-    return 'DELETE TAREAS';
+  @Delete(':id')
+  async delete(@Param('id') id: string): Promise<Tarea> {
+    return this.todosSvc.delete(id);
   }
 }
